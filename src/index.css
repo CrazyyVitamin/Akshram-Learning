@@ -1,0 +1,487 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap');
+
+@import "tailwindcss";
+
+/* Custom Color Palette - Premium Indian Aesthetic (Bright Theme) */
+:root {
+  --saffron: #FF9933;
+  --saffron-dark: #E67300;
+  --saffron-deep: #CC5500;
+  --maroon: #800020;
+  --maroon-deep: #5C0015;
+  --gold: #FFD700;
+  --gold-muted: #D4AF37;
+  --cream: #FFF8E7;
+  --cream-light: #FFFDF5;
+  --cream-dark: #F5EDD6;
+  --parchment: #FAF3E0;
+  --mahogany: #4E2728;
+  --mahogany-light: #6B3A3B;
+  --tile-face: #FFFEF8;
+  --tile-side: #C9842F;
+  --tile-bottom: #A66B20;
+  --text-dark: #2D1810;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--parchment);
+  min-height: 100vh;
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* Bright Parchment Background with Indian Motifs */
+.game-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 253, 245, 0.9) 0%, rgba(250, 243, 224, 1) 100%);
+}
+
+.game-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.08'%3E%3Cpath d='M30 30c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10c0 5.5-4.5 10-10 10s-10-4.5-10-10 4.5-10 10-10c-5.5 0-10-4.5-10-10s4.5-10 10-10 10 4.5 10 10c5.5 0 10 4.5 10 10'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+
+/* Tile Styling - Premium 3D Chunky Appearance */
+.tile-font {
+  font-family: 'Tiro Devanagari Hindi', serif;
+}
+
+.tile {
+  @apply flex items-center justify-center cursor-pointer select-none;
+  position: absolute;
+  width: 60px;
+  height: 72px;
+  background: linear-gradient(145deg, #FFFFFE 0%, #FFF8E7 50%, #F5EDD6 100%);
+  border-radius: 10px;
+  font-size: 2rem;
+  color: var(--maroon);
+  font-weight: 600;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  transform-style: preserve-3d;
+}
+
+/* 3D Tile Depth - Side Edge (creates thickness) */
+.tile::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  right: -6px;
+  top: 6px;
+  bottom: -6px;
+  background: linear-gradient(135deg, var(--tile-side) 0%, var(--tile-bottom) 100%);
+  border-radius: 10px;
+  z-index: -1;
+  transform: translateZ(-1px);
+}
+
+/* 3D Tile Depth - Bottom Edge (creates shadow) */
+.tile::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: -8px;
+  top: 8px;
+  bottom: -8px;
+  background: linear-gradient(145deg, #8B5A2B 0%, #5C3A1A 100%);
+  border-radius: 12px;
+  z-index: -2;
+  opacity: 0.9;
+}
+
+/* Tile inner shadow for debossed look */
+.tile-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: linear-gradient(145deg,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 248, 231, 0.6) 50%,
+      rgba(245, 237, 214, 0.4) 100%);
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.9),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Subtle paisley pattern on tile face */
+.tile-pattern {
+  position: absolute;
+  inset: 4px;
+  border-radius: 6px;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800020' fill-opacity='1'%3E%3Cpath fill-rule='evenodd' d='M20 18c0-5 3-8 8-8s8 3 8 8-3 8-8 8c0 4-3 7-7 7s-7-3-7-7c-4 0-7-3-7-7s3-7 7-7c0-4 3-7 7-7s7 3 7 7'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Top shine highlight */
+.tile-shine {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  right: 4px;
+  height: 20px;
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0) 100%);
+  border-radius: 8px 8px 50% 50%;
+  pointer-events: none;
+}
+
+.tile:hover:not(.tile-blocked) {
+  transform: translateY(-6px) translateX(-2px);
+  filter: brightness(1.05);
+}
+
+.tile:hover:not(.tile-blocked)::before {
+  background: linear-gradient(135deg, #D9943F 0%, #B67B30 100%);
+}
+
+.tile-selected {
+  background: linear-gradient(145deg, #FFE566 0%, #FFD700 50%, #E6B800 100%) !important;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  animation: tile-selected-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes tile-selected-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 35px rgba(255, 153, 51, 0.4);
+  }
+}
+
+.tile-blocked {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.2) brightness(0.95);
+}
+
+/* Card Styling - Bright Theme */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  box-shadow:
+    0 10px 40px rgba(128, 0, 32, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Indian Pattern Border */
+.indian-border {
+  border: 3px solid transparent;
+  background:
+    linear-gradient(white, white) padding-box,
+    linear-gradient(45deg, var(--gold), var(--saffron), var(--gold)) border-box;
+  border-radius: 16px;
+}
+
+/* Decorative Elements - Subtle on bright background */
+.mandala-bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150vmax;
+  height: 150vmax;
+  background: repeating-conic-gradient(from 0deg,
+      rgba(212, 175, 55, 0.03) 0deg 10deg,
+      transparent 10deg 20deg);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Premium Button Styling - Bright Theme */
+.btn-primary {
+  @apply px-6 py-3 font-semibold rounded-lg transition-all duration-300;
+  background: linear-gradient(135deg, var(--saffron), #FFB347);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 4px 15px rgba(255, 153, 51, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 20px rgba(255, 153, 51, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #FFB347, var(--saffron));
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 font-medium rounded-lg transition-all duration-300;
+  background: rgba(128, 0, 32, 0.08);
+  border: 2px solid var(--maroon);
+  color: var(--maroon);
+}
+
+.btn-secondary:hover {
+  background: rgba(128, 0, 32, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Input Styling - Bright Theme */
+.input-field {
+  @apply w-full px-4 py-3 rounded-lg transition-all duration-300;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  color: var(--text-dark);
+}
+
+.input-field::placeholder {
+  color: rgba(45, 24, 16, 0.4);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--saffron);
+  box-shadow: 0 0 15px rgba(255, 153, 51, 0.2);
+  background: white;
+}
+
+/* Info Panel Styling */
+.info-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Timer Styling */
+.timer-display {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--maroon);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 153, 51, 0.1));
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--gold-muted);
+}
+
+/* Shuffle Penalty Indicator */
+.shuffle-penalty {
+  color: #CC0000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  animation: penalty-flash 0.5s ease-out;
+}
+
+@keyframes penalty-flash {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Confetti Animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  animation: confetti-fall 3s ease-in-out forwards;
+}
+
+/* Level Card Styling */
+.level-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(250, 243, 224, 0.9));
+  border: 2px solid transparent;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(128, 0, 32, 0.08);
+}
+
+.level-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--saffron);
+  box-shadow:
+    0 8px 30px rgba(255, 153, 51, 0.2),
+    0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.level-card.selected {
+  border-color: var(--gold);
+  background: linear-gradient(145deg, rgba(255, 215, 0, 0.15), rgba(255, 248, 231, 0.95));
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* Leaderboard Styling */
+.leaderboard-item {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.leaderboard-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateX(4px);
+}
+
+.leaderboard-gold {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #5C3A1A;
+}
+
+.leaderboard-silver {
+  background: linear-gradient(135deg, #E8E8E8 0%, #C0C0C0 100%);
+  color: #333;
+}
+
+.leaderboard-bronze {
+  background: linear-gradient(135deg, #CD7F32 0%, #8B4513 100%);
+  color: white;
+}
+
+/* Tab Styling */
+.tab-button {
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: var(--text-dark);
+  background: transparent;
+}
+
+.tab-button:hover {
+  background: rgba(255, 153, 51, 0.1);
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--saffron);
+}
+
+/* Responsive Tile Sizes */
+@media (max-width: 768px) {
+  .tile {
+    width: 48px;
+    height: 58px;
+    font-size: 1.5rem;
+  }
+
+  .tile::before {
+    right: -5px;
+    bottom: -5px;
+    top: 5px;
+  }
+
+  .tile::after {
+    right: -6px;
+    bottom: -6px;
+    top: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tile {
+    width: 40px;
+    height: 48px;
+    font-size: 1.25rem;
+  }
+
+  .tile::before {
+    right: -4px;
+    bottom: -4px;
+    top: 4px;
+  }
+
+  .tile::after {
+    right: -5px;
+    bottom: -5px;
+    top: 5px;
+  }
+}
+
+/* Utility Classes */
+.text-maroon {
+  color: var(--maroon);
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.text-saffron {
+  color: var(--saffron);
+}
+
+.bg-cream {
+  background-color: var(--cream);
+}
+
+.border-gold {
+  border-color: var(--gold);
+}

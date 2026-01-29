@@ -13,7 +13,7 @@ import WinScreen from './WinScreen';
 import { DIFFICULTY_LEVELS } from '../utils/tileData';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 
-const SHUFFLE_PENALTY = 10; // seconds added to timer on shuffle
+const SHUFFLE_PENALTY = 10; // Not used anymore - kept for reference
 
 export function GameScreen({ playerName, difficulty, onHome }) {
     const {
@@ -22,12 +22,15 @@ export function GameScreen({ playerName, difficulty, onHome }) {
         gameStatus,
         timer,
         shufflesRemaining,
+        hintsRemaining,
+        activeHint,
         freeTiles,
         rank,
         matchedPairs,
         totalPairs,
         handleTileClick,
         useShuffle,
+        useHint,
         restartGame
     } = useGameLogic(difficulty, playerName);
 
@@ -61,7 +64,7 @@ export function GameScreen({ playerName, difficulty, onHome }) {
                     <h2 className="text-2xl font-bold mb-2 text-maroon">No Moves Available!</h2>
                     <p className="text-gray-600 mb-6">
                         There are no more matching pairs available.
-                        {shufflesRemaining > 0 ? ` Use shuffle to continue! (+${SHUFFLE_PENALTY}s penalty)` : ' Try a new game.'}
+                        {shufflesRemaining > 0 ? ` Use shuffle to continue!` : ' Try a new game.'}
                     </p>
                     <div className="flex gap-4 justify-center">
                         {shufflesRemaining > 0 && (
@@ -124,6 +127,7 @@ export function GameScreen({ playerName, difficulty, onHome }) {
                 <GameBoard
                     tiles={tiles}
                     selectedTile={selectedTile}
+                    activeHint={activeHint}
                     freeTiles={freeTiles}
                     onTileClick={handleTileClick}
                 />
@@ -138,11 +142,12 @@ export function GameScreen({ playerName, difficulty, onHome }) {
             >
                 <Controls
                     shufflesRemaining={shufflesRemaining}
+                    hintsRemaining={hintsRemaining}
                     onShuffle={useShuffle}
+                    onHint={useHint}
                     onRestart={restartGame}
                     onHome={onHome}
                     gameStatus={gameStatus}
-                    shufflePenalty={SHUFFLE_PENALTY}
                 />
             </motion.footer>
         </div>

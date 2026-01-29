@@ -47,7 +47,7 @@ export const DIFFICULTY_LEVELS = {
         pairs: 18,
         // Use only vowels and first 5 consonants for beginners
         characters: [...VOWELS.slice(0, 11), ...CONSONANTS.slice(0, 7)],
-        hints: 5,
+        hints: 1,
         shuffles: 3
     },
     anubhavi: {
@@ -59,7 +59,7 @@ export const DIFFICULTY_LEVELS = {
         pairs: 36,
         // Use all vowels and most consonants
         characters: [...VOWELS, ...CONSONANTS.slice(0, 23)],
-        hints: 3,
+        hints: 2,
         shuffles: 2
     },
     shreshtha: {
@@ -71,7 +71,7 @@ export const DIFFICULTY_LEVELS = {
         pairs: 72,
         // Use all characters including conjuncts
         characters: ALL_CHARACTERS,
-        hints: 2,
+        hints: 3,
         shuffles: 1
     }
 };

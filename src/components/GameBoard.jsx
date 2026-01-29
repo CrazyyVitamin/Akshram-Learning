@@ -9,6 +9,7 @@ import Tile from './Tile';
 export function GameBoard({
     tiles,
     selectedTile,
+    activeHint,
     freeTiles,
     onTileClick
 }) {
@@ -48,15 +49,19 @@ export function GameBoard({
                 {/* Sort tiles by z for proper rendering order */}
                 {[...tiles]
                     .sort((a, b) => a.z - b.z || a.y - b.y || a.x - b.x)
-                    .map(tile => (
-                        <Tile
-                            key={tile.id}
-                            tile={tile}
-                            isSelected={selectedTile?.id === tile.id}
-                            isFree={freeTileIds.has(tile.id)}
-                            onClick={onTileClick}
-                        />
-                    ))
+                    .map(tile => {
+                        const isHinted = activeHint?.some(hintTile => hintTile.id === tile.id);
+                        return (
+                            <Tile
+                                key={tile.id}
+                                tile={tile}
+                                isSelected={selectedTile?.id === tile.id}
+                                isHinted={isHinted}
+                                isFree={freeTileIds.has(tile.id)}
+                                onClick={onTileClick}
+                            />
+                        );
+                    })
                 }
             </div>
         </div>

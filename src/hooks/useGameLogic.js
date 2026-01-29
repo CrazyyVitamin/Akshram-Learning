@@ -11,11 +11,10 @@ import {
     canMatch,
     hasMoves,
     shuffleTiles,
-    saveScore
+    saveScore,
+    findHint
 } from '../utils/gameUtils';
 import { DIFFICULTY_LEVELS } from '../utils/tileData';
-
-const SHUFFLE_PENALTY = 10; // seconds added to timer on shuffle
 
 export function useGameLogic(difficulty, playerName) {
     const [tiles, setTiles] = useState([]);
@@ -23,6 +22,8 @@ export function useGameLogic(difficulty, playerName) {
     const [gameStatus, setGameStatus] = useState('idle'); // idle, playing, won, stuck
     const [timer, setTimer] = useState(0);
     const [shufflesRemaining, setShufflesRemaining] = useState(0);
+    const [hintsRemaining, setHintsRemaining] = useState(0);
+    const [activeHint, setActiveHint] = useState(null);
     const [rank, setRank] = useState(null);
     const [matchedPairs, setMatchedPairs] = useState(0);
 
@@ -36,6 +37,8 @@ export function useGameLogic(difficulty, playerName) {
         setGameStatus('idle');
         setTimer(0);
         setShufflesRemaining(config.shuffles);
+        setHintsRemaining(config.hints);
+        setActiveHint(null);
         setRank(null);
         setMatchedPairs(0);
     }, [difficulty, config]);
@@ -107,7 +110,7 @@ export function useGameLogic(difficulty, playerName) {
         }
     }, [gameStatus, selectedTile, tiles]);
 
-    // Use shuffle with time penalty
+    // Use shuffle (no penalty)
     const useShuffle = useCallback(() => {
         if (shufflesRemaining <= 0 || (gameStatus !== 'playing' && gameStatus !== 'stuck')) return;
 
@@ -115,15 +118,29 @@ export function useGameLogic(difficulty, playerName) {
         setTiles(shuffled);
         setShufflesRemaining(prev => prev - 1);
         setSelectedTile(null);
-
-        // Add time penalty
-        setTimer(prev => prev + SHUFFLE_PENALTY);
+        setActiveHint(null);
 
         // If we were stuck, go back to playing
         if (gameStatus === 'stuck') {
             setGameStatus('playing');
         }
     }, [shufflesRemaining, tiles, gameStatus]);
+
+    // Use hint
+    const useHint = useCallback(() => {
+        if (hintsRemaining <= 0 || gameStatus !== 'playing') return;
+
+        const hintPair = findHint(tiles);
+        if (hintPair) {
+            setActiveHint(hintPair);
+            setHintsRemaining(prev => prev - 1);
+
+            // Clear hint after 3 seconds
+            setTimeout(() => {
+                setActiveHint(null);
+            }, 3000);
+        }
+    }, [hintsRemaining, tiles, gameStatus]);
 
     // Initialize on mount
     useEffect(() => {
@@ -136,12 +153,15 @@ export function useGameLogic(difficulty, playerName) {
         gameStatus,
         timer,
         shufflesRemaining,
+        hintsRemaining,
+        activeHint,
         freeTiles,
         rank,
         matchedPairs,
         totalPairs: config.pairs,
         handleTileClick,
         useShuffle,
+        useHint,
         restartGame: initGame
     };
 }

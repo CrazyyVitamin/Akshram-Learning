@@ -29,6 +29,7 @@ const playClickSound = () => {
 export function Tile({
     tile,
     isSelected,
+    isHinted,
     isFree,
     onClick
 }) {
@@ -47,7 +48,7 @@ export function Tile({
         zIndex: z * 100 + Math.floor(y * 10) + Math.floor(x),
     };
 
-    // Animation variants
+    // Animation variants - smoother transitions
     const variants = {
         initial: { scale: 0, opacity: 0, rotateY: -90 },
         animate: {
@@ -56,8 +57,8 @@ export function Tile({
             rotateY: 0,
             transition: {
                 type: 'spring',
-                stiffness: 260,
-                damping: 20,
+                stiffness: 180,
+                damping: 25,
                 delay: z * 0.02
             }
         },
@@ -66,16 +67,16 @@ export function Tile({
             opacity: 0,
             rotateY: 180,
             y: -20,
-            transition: { duration: 0.4, ease: 'easeInOut' }
+            transition: { duration: 0.5, ease: 'easeInOut' }
         },
         hover: isFree ? {
             y: -8,
             x: -2,
-            transition: { duration: 0.2 }
+            transition: { type: 'spring', stiffness: 200, damping: 15 }
         } : {},
         tap: isFree ? {
             scale: 0.96,
-            transition: { duration: 0.1 }
+            transition: { duration: 0.15 }
         } : {}
     };
 
@@ -91,6 +92,7 @@ export function Tile({
         'tile',
         'tile-font',
         isSelected && 'tile-selected',
+        isHinted && 'tile-hinted',
         !isFree && 'tile-blocked'
     ].filter(Boolean).join(' ');
 
